@@ -46,29 +46,29 @@ def read_ishares_csv(url):
 
 # OEF - s%p 100
 def get_snp100_stocks():
-    df = read_ishares_csv("https://www.ishares.com/us/products/239723/ishares-sp-100-etf/1467271812596.ajax?fileType=csv&fileName=OEF_holdings&dataType=fund")
+    df = read_ishares_csv("https://www.blackrock.com/varnish-api/blk-one01-product-data/product-data/api/v1/get-fund-document?appType=PRODUCT_PAGE&appSubType=ISHARES&targetSite=us-ishares&locale=en_US&portfolioId=239723&userType=individual&asOfDate=20260515&component=holdings")
     return df
 
 
 # IVV - s&p 500
 def get_snp500_stocks():
-    df = read_ishares_csv("https://www.ishares.com/us/products/239726/ishares-core-sp-500-etf/1467271812596.ajax?fileType=csv&fileName=IVV_holdings&dataType=fund")
+    df = read_ishares_csv("https://www.blackrock.com/varnish-api/blk-one01-product-data/product-data/api/v1/get-fund-document?appType=PRODUCT_PAGE&appSubType=ISHARES&targetSite=us-ishares&locale=en_US&portfolioId=239728&userType=individual&asOfDate=20260515&component=holdings")
     return df
 
 # IWB - russell 1000 (~top 1000 biggest)
 def get_russell1000_stocks():
-    df = read_ishares_csv("https://www.ishares.com/us/products/239707/ishares-russell-1000-etf/1467271812596.ajax?fileType=csv&fileName=IWB_holdings&dataType=fund")
+    df = read_ishares_csv("https://www.blackrock.com/varnish-api/blk-one01-product-data/product-data/api/v1/get-fund-document?appType=PRODUCT_PAGE&appSubType=ISHARES&targetSite=us-ishares&locale=en_US&portfolioId=239707&userType=individual&asOfDate=20260515&component=holdings")
     return df
 
 
 # IWM - russell 2000 (~smallest 2000)
 def get_russell2000_stocks():
-    df = read_ishares_csv("https://www.ishares.com/us/products/239710/ishares-russell-2000-etf/1467271812596.ajax?fileType=csv&fileName=IWM_holdings&dataType=fund")
+    df = read_ishares_csv("https://www.blackrock.com/varnish-api/blk-one01-product-data/product-data/api/v1/get-fund-document?appType=PRODUCT_PAGE&appSubType=ISHARES&targetSite=us-ishares&locale=en_US&portfolioId=239710&userType=individual&asOfDate=20260515&component=holdings")
     return df
 
 # IWV - russell 3000 (~top 3000 stocks)
 def get_russell3000_stocks():
-    df = read_ishares_csv("https://www.ishares.com/us/products/239714/ishares-russell-3000-etf/1467271812596.ajax?fileType=csv&fileName=IWV_holdings&dataType=fund")
+    df = read_ishares_csv("https://www.blackrock.com/varnish-api/blk-one01-product-data/product-data/api/v1/get-fund-document?appType=PRODUCT_PAGE&appSubType=ISHARES&targetSite=us-ishares&locale=en_US&portfolioId=239714&userType=individual&asOfDate=20260515&component=holdings")
     return df
 
 

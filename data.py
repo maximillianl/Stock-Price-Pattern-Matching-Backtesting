@@ -185,11 +185,8 @@ def db_to_df(db_file_name):
             ORDER BY ticker_symbol, date ASC
            
         '''
-
         cursor.execute(query)
         rows = cursor.fetchall()
-
-
 
     df = pd.DataFrame(rows, columns=['Ticker', 'Date', 'Open', 'High', 'Low', 'Close', 'Volume'])
     return df
