@@ -235,7 +235,9 @@ def compare_DTW(stock, test_stocks, w = 20, features_compared = FEATURES_DEFAULT
             comparitor_z = z_score(comparitor_values)
             DTW_score = DTW(target_z, comparitor_z, w // 4)
             results.append({'Ticker': ticker, 'start_date': ticker_df['Date'].iloc[start], 'end_date': ticker_df['Date'].iloc[start + w - 1], 'DTW_score': DTW_score})
-            print(DTW_score)
+            
+            # debugging print statement
+            # print(DTW_score)
 
 
     results.sort(key=lambda x: x['DTW_score'])

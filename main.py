@@ -7,114 +7,23 @@ from backtest import *
 
 import sqlite3
 
-def print_table(db_path: str, table: str):
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
-    cur.execute(f"SELECT * FROM {table}")
-    rows = cur.fetchall()
-    for r in rows:
-        print(r)
-    conn.close()
-
-def search_ticker_in_db(symbol: str):
-    symbol = symbol.strip().upper()
-    cached = set(s.upper() for s in list_cached_tickers())
-    return symbol in cached
-
-def count_rows(db_path, table):
-    with sqlite3.connect(db_path) as conn:
-        cur = conn.cursor()
-        return cur.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
-    
-
 def main():
-    # # snp500_stocks_api = get_snp500_stocks_api()
-    # # print(snp500_stocks)
-    # snp500_stocks = get_snp500_stocks()
-
-    # # print(snp500_stocks)
-    # russell1000_stocks = get_russell1000_stocks()
-    # # # print(russell1000_stocks)
-    # russell2000_stocks = get_russell2000_stocks()
-    # # # print(russell2000_stocks)
-    # russell3000_stocks = get_russell3000_stocks()
-    # # # print(russell3000_stocks)
-    
+    # load and cache stock data
     snp100_stocks = get_snp100_stocks()
-
-    # normalized_snp500 = normalize_list(snp500_stocks)
-    normalized_snp100 = normalize_list(snp100_stocks)
-
-
-    # print(normalized_snp500)
-    # normalized_r1000 = normalize_list(russell1000_stocks)
-    # normalized_r2000 = normalize_list(russell2000_stocks)
-    # normalized_r3000 = normalize_list(russellu3000_stocks)
-    # merged_list = merge_stock_lists(normalized_snp500, normalized_r1000, normalized_r2000, normalized_r3000)
-    # list_to_csv(merged_list, "all_stocks.csv")
-
-    # list_to_csv(normalized_r3000, "russell3000_stocks.csv")
-    list_to_csv(normalized_snp100, "snp100_stocks.csv")
-    # list_to_csv(normalized_snp500, "snp500_stocks.csv")
-
-    #when going through stocks, if ticker not found try adding dash before last letter of ticker symbol
-
-    # remove_ticker_from_db("brkb")
-    # cache_stock_to_db("snp500_stocks.csv")
+    normalized = normalize_list(snp100_stocks)
+    list_to_csv(normalized, "snp100_stocks.csv")
     cache_stock_to_db("snp100_stocks.csv")
 
-
-
-
-
-    # print_table("stocks_cache.db", "stocks_table")
-    # print(search_ticker_in_db("brkb"))
-    # print(search_ticker_in_db("BRK-B"))
-    # print(list_cached_tickers())
-    # print(print_table("stocks_cache.db", "stocks_table"))
-    # print(count_rows("stocks_cache.db", "stocks_table"))
-
-
-    date_range = ("2025-01-01", "2025-12-31")
-    # print(get_stock_info("AAPL"))
-    # print(get_stock_info("BRK-B", date_range))
-    # print(get_stock_info("brkb", date_range))
-
-
-    # graph_stock_info("mgm", date_range, "Volume")
-
-
-
-
-    # with sqlite3.connect("stocks_cache.db") as conn:
-    #     cur = conn.cursor()
-    #     print("Rows for MGM:", cur.execute(6
-    #         "SELECT COUNT(*) FROM stocks_table WHERE ticker_symbol='MGM'"
-    #     ).fetchone()[0])
-
-    #     print("First 5 MGM rows:", cur.execute(
-    #         "SELECT ticker_symbol, date FROM stocks_table WHERE ticker_symbol='MGM' ORDER BY date LIMIT 5"
-    #     ).fetchall())
-
-    # print(load_stock_from_db("AAPL"))
-
+    # build feature dataframe
     df = db_to_df("stocks_cache.db")
-    # print(df)
-    # df = log_returns(df)
-    # df = add_daily_candles(df)
-    # df = log_rvol(df)
-    
-    print(df)
     create_df(df)
 
-    # a = compare_DTW("GOOG", df, w = 20, features_compared = ["log_return", "log_rvol"])
-    a = backtest_compare_DTW("META", df, w = 30, features_compared = ["log_return"])
-    print(a)
-    a = create_backtest_df(a)
-    a = add_future_price_movement(a, df)
-    backtest = add_future_price_movement_comparison(a)
-    print(backtest)
-    
+    # run backtest comparison
+    results = backtest_compare_DTW("META", df, w=20, features_compared=["log_return", "log_rvol"])
+    results_df = create_backtest_df(results)
+    results_df = add_future_price_movement(results_df, df)
+    results_df = add_future_price_movement_comparison(results_df)
+    print(results_df)
 
 if __name__ == "__main__":
     main()
